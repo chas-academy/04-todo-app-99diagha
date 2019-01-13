@@ -15,7 +15,8 @@ class TodoController extends Controller {
     public function add()
     {
         $body = filter_body();
-        $result = TodoItem::createTodo($body['title']);
+        $title = $body['title'];
+        $result = TodoItem::createTodo($title);
 
         if ($result) {
             $this->redirect('/');
@@ -26,13 +27,19 @@ class TodoController extends Controller {
     {
         $body = filter_body(); // gives you the body of the request (the "envelope" contents)
         $todoId = $urlParams['id']; // the id of the todo we're trying to update
-        $completed = isset($body['status']) ? 1 : 0; // whether or not the todo has been checked or not
+        $title = $body['title'];
+        $completed = isset($body['status']) ? true : false; // whether or not the todo has been checked or not
 
+        $result = TodoItem::updateTodo($todoId, $title, $completed);
+
+        if ($result) {
+            $this->redirect('/');
+        }
     }
 
     public function delete($urlParams)
     {
-      // TODO: Implement me!
+
     }
 
     /**

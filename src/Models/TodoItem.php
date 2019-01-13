@@ -8,29 +8,44 @@ class TodoItem extends Model
 
     public static function createTodo($title)
     {
+        $query = "INSERT INTO todos (title, created)
+                  VALUES (:title, :created)";
+        $date = date('Y-m-d H:i:s');
+
+        static::$db->query($query);
+        static::$db->bind(':title', $title);
+        static::$db->bind(':created', $date);
+
+        $result = static::$db->execute();
+
+        if (!$result) {
+            throw new \Exception("Error occured when trying to add todo.");
+        }
+
+        return $result;
+    }
+    public static function updateTodo($todoId, $title, $completed = null)
+    {
         try {
-            $query = "INSERT INTO todos (title, created)
-                      VALUES (:title, :created)";
-            $date = date('Y-m-d H:i:s');
+            $query = "UPDATE todos 
+                      SET title = :title
+                      WHERE id = :id";
 
             static::$db->query($query);
+            static::$db->bind(':id', $todoId);
             static::$db->bind(':title', $title);
-            static::$db->bind(':created', $date);
+            //static::$db->bind(':completed', $completed);
 
             $result = static::$db->execute();
 
             if (!$result) {
-                throw new \Exception("Error occured when trying to add todo.");
+                throw new \Exception("Error occured when trying to update todo.");
             }
 
             return $result;
         } catch (PDOException $err) {
             return $err->getMessage();
         }
-    }
-    public static function updateTodo($todoId, $title, $completed = null)
-    {
-
     }
 
     public static function deleteTodo($todoId)
