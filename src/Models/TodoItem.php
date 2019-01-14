@@ -18,47 +18,55 @@ class TodoItem extends Model
 
         $result = static::$db->execute();
 
-        if (!$result) {
-            throw new \Exception("Error occured when trying to add todo.");
+        if (!empty($result)) {
+            return $result;
+        } else {
+            throw new \Exception("Error occured when trying to add todo");
         }
-
-        return $result;
     }
     public static function updateTodo($todoId, $title, $completed = null)
     {
-        try {
-            $query = "UPDATE todos 
-                      SET title = :title
-                      WHERE id = :id";
+        $query = "UPDATE todos 
+                  SET title = :title
+                  WHERE id = :id";
 
-            static::$db->query($query);
-            static::$db->bind(':id', $todoId);
-            static::$db->bind(':title', $title);
-            //static::$db->bind(':completed', $completed);
+        static::$db->query($query);
+        static::$db->bind(':id', $todoId);
+        static::$db->bind(':title', $title);
+        //static::$db->bind(':completed', $completed);
 
-            $result = static::$db->execute();
+        $result = static::$db->execute();
 
-            if (!$result) {
-                throw new \Exception("Error occured when trying to update todo.");
-            }
-
+        if (!empty($result)) {
             return $result;
-        } catch (PDOException $err) {
-            return $err->getMessage();
+        } else {
+            throw new \Exception("Error occured when trying to update todo");
         }
     }
 
     public static function deleteTodo($todoId)
     {
+        $query = "DELETE FROM todos 
+                  WHERE id = :id";
 
+        static::$db->query($query);
+        static::$db->bind(':id', $todoId);
+
+        $result = static::$db->execute();
+
+        if (!empty($result)) {
+            return $result;
+        } else {
+            throw new \Exception("Error occured when trying to delete todo");
+        }
     }
     
     // (Optional bonus methods below)
-    // public static function toggleTodos($completed)
-    // {
+    public static function toggleTodos($completed)
+    {
     //     // TODO: Implement me!
     //     // This is to toggle all todos either as completed or not completed
-    // }
+    }
 
     // public static function clearCompletedTodos()
     // {
