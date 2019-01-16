@@ -28,7 +28,7 @@ class TodoController extends Controller {
         $body = filter_body(); // gives you the body of the request (the "envelope" contents)
         $todoId = $urlParams['id']; // the id of the todo we're trying to update
         $title = $body['title'];
-        $completed = isset($body['status']) ? true : false; // whether or not the todo has been checked or not
+        $completed = isset($body['status']) ? 'true' : 'false'; // whether or not the todo has been checked or not
 
         $result = TodoItem::updateTodo($todoId, $title, $completed);
 
@@ -61,7 +61,11 @@ class TodoController extends Controller {
 
     public function clear()
     {
-      // (OPTIONAL) TODO: This action should remove all completed todos from the table.
+        $result = TodoItem::clearCompletedTodos();
+
+        if ($result) {
+            $this->redirect('/');
+        }
     }
 
 }

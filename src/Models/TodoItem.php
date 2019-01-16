@@ -27,13 +27,13 @@ class TodoItem extends Model
     public static function updateTodo($todoId, $title, $completed = null)
     {
         $query = "UPDATE todos 
-                  SET title = :title
+                  SET title = :title, completed = :completed
                   WHERE id = :id";
 
         static::$db->query($query);
         static::$db->bind(':id', $todoId);
         static::$db->bind(':title', $title);
-        //static::$db->bind(':completed', $completed);
+        static::$db->bind(':completed', $completed);
 
         $result = static::$db->execute();
 
@@ -68,10 +68,19 @@ class TodoItem extends Model
     //     // This is to toggle all todos either as completed or not completed
     }
 
-    // public static function clearCompletedTodos()
-    // {
-    //     // TODO: Implement me!
-    //     // This is to delete all the completed todos from the database
-    // }
+    public static function clearCompletedTodos()
+    {
+        $query = "DELETE FROM todos
+                  WHERE completed = 'true'";
+        static::$db->query($query);
+
+        $result = static::$db->execute();
+
+        if (!empty($result)) {
+            return $result;
+        } else {
+            throw new \Exception("Error occured when trying to clear completed todos");
+        }
+    }
 
 }
