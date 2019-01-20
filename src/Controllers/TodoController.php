@@ -9,6 +9,7 @@ class TodoController extends Controller {
     public function get()
     {
         $todos = TodoItem::findAll();
+
         return $this->view('index', ['todos' => $todos]);
     }
 
@@ -72,5 +73,15 @@ class TodoController extends Controller {
         if ($result) {
             $this->redirect('/');
         }
+    }
+
+    //unfinished
+    public function search()
+    {
+        $body = filter_body();
+        $search = $body['search'];
+        $todos = TodoItem::searchTodos($search);
+
+        return $this->view('index', ['todos' => $todos]);
     }
 }

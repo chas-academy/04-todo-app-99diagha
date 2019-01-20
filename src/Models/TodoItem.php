@@ -92,4 +92,23 @@ class TodoItem extends Model
             throw new \Exception("Error occured when trying to clear completed todos");
         }
     }
+
+    //unfinished
+    public static function searchTodos($search)
+    {
+        $query = "SELECT * 
+                  FROM todos
+                  WHERE title LIKE CONCAT('%', :search, '%')
+                  ORDER BY created DESC";
+        static::$db->query($query);
+        static::$db->bind(':search', $search);
+
+        $results = static::$db->resultset();
+
+        if (!empty($results)) {
+            return $results;
+        } else {
+            return [];
+        }
+    }
 }

@@ -1,5 +1,9 @@
 <header class="header">
     <h1>todos</h1>
+    <!-- unfinished -->
+    <form method="post" action="todos/search">
+        <input name="search" class="new-todo" placeholder="Search">
+    </form>
     <form id="create-todo" method="post" action="todos">
         <input name="title" class="new-todo" placeholder="What needs to be done?" autofocus>
     </form>
