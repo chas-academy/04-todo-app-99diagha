@@ -56,7 +56,13 @@ class TodoController extends Controller {
      */
     public function toggle()
     {
+        $body = filter_body();
+        $completed = isset($body['toggle-all']) ? 'true' : 'false';
+        $result = TodoItem::toggleTodos($completed);
 
+        if ($result) {
+            $this->redirect('/');
+        }
     }
 
     public function clear()
@@ -67,5 +73,4 @@ class TodoController extends Controller {
             $this->redirect('/');
         }
     }
-
 }

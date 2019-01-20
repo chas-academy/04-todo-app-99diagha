@@ -14,4 +14,12 @@
 <body>
 
 <main class="todoapp">
-  <?php include __DIR__ . '/nav.php'; ?>
+    <?php
+        $all_completed = true;
+        foreach ($todos as $todo) {
+            if ($todo['completed'] == 'false') {
+               $all_completed = false;
+            }
+        }
+    ?>
+    <?= includeWith('/partials/nav.php', compact('all_completed', $all_completed)) ?>
